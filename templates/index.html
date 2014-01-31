@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"
+          rel="stylesheet">
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h3 class="text-muted">Innovid</h3>
+        <h4 class="text-muted">Uploads for Multi-Screen Display App</h4>
+      </div>
+      <hr/>
+      <div>
+      
+      <form action="" method=post enctype=multipart/form-data>
+        <input type=file name=file><br /><br />
+        <input type=submit value=Upload>
+      </form>
+      </div>
+      <div>
+      {% for name in names %}
+      <li>{{name}}</li>
+      {% endfor %}
+    </div>
+    </div>
+  </body>
+</html>
