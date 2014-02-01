@@ -34,7 +34,7 @@ Links to related repositories
 
 [ofxJSON]: https://github.com/jefftimesten/ofxJSON
 
-[OS X MASTER]: https://github.com/rouxpz/innovid-web
+[OS X MASTER]: https://github.com/jdiedrick/innovidMultiscreenDisplayAppOSXMaster
 
 [OS X CLIENT]: https://github.com/jdiedrick/innovidMultiscreenDisplayAppOSXClient
 
