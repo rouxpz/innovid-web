@@ -1,0 +1,3 @@
+Flask==0.10
+Flask-mongoengine==0.7.0
+boto==2.17.0
