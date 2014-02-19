@@ -1,24 +1,25 @@
 import os, re
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory
-from flask.ext.mongoengine import mongoengine
+import pymongo
+#from pymongo import ModelClient
 from werkzeug import secure_filename
 import boto
 import models
 
-
-#path to upload directory
-UPLOAD_FOLDER = 'uploads'
+# import all of mongoengine
+from flask.ext.mongoengine import mongoengine
 
 #allowed extensions
 ALLOWED_EXTENSIONS = set(['mov'])
 
 #initialize Flask application
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.secret_key = os.environ.get('SECRET_KEY') # put SECRET_KEY variable inside .env file with a random string of alphanumeric characters
+app.config['CSRF_ENABLED'] = False
 
 mongoengine.connect('mydata', host=os.environ.get('MONGOLAB_URI'))
 
-names = []
+# names = []
 
 #return whether it's allowed or not
 def allowed_file(filename):
@@ -62,7 +63,7 @@ def index():
 			return "Uh-oh, there was an error" + uploaded_file.filename
 	else:
 
-		return render_template('index.html')
+		return render_template('main.html')
 
 
 #expecting the name of a file -- will locate file on the upload directory and show in the browser
