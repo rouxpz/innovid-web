@@ -1,6 +1,6 @@
 import os, re
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory
-import pymongo
+# import pymongo
 #from pymongo import ModelClient
 from werkzeug import secure_filename
 import boto
@@ -18,13 +18,9 @@ app.secret_key = os.environ.get('SECRET_KEY') # put SECRET_KEY variable inside .
 app.config['CSRF_ENABLED'] = False
 
 mongoengine.connect('mydata', host=os.environ.get('MONGOLAB_URI'))
+app.logger.debug("Connecting to MongoLabs")
 
 # names = []
-
-#return whether it's allowed or not
-def allowed_file(filename):
-	return '.' in filename and \
-           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -53,7 +49,8 @@ def index():
 			if k and k.size > 0:
 
 				submission = models.Video()
-				submission_title = request.form.get('title')
+				submission.title = request.form.get('title')
+				submission.filename = filename
 				submission.save()
 
 				return redirect('/')
@@ -63,7 +60,16 @@ def index():
 			return "Uh-oh, there was an error" + uploaded_file.filename
 	else:
 
-		return render_template('main.html')
+		templateData = {
+				'form' : video_upload_form
+		}
+
+		return render_template('main.html', **templateData)
+
+#return whether it's allowed or not
+def allowed_file(filename):
+	return '.' in filename and \
+           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 
 #expecting the name of a file -- will locate file on the upload directory and show in the browser
