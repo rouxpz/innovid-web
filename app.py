@@ -10,7 +10,7 @@ import models
 from flask.ext.mongoengine import mongoengine
 
 #allowed extensions
-ALLOWED_EXTENSIONS = set(['mov'])
+ALLOWED_EXTENSIONS = set(['mov', 'MOV'])
 
 #initialize Flask application
 app = Flask(__name__)
