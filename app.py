@@ -15,7 +15,7 @@ ALLOWED_EXTENSIONS = set(['mov'])
 #initialize Flask application
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY') # put SECRET_KEY variable inside .env file with a random string of alphanumeric characters
-app.config['CSRF_ENABLED'] = False
+app.config['CSRF_ENABLED'] = True
 
 mongoengine.connect('mydata', host=os.environ.get('MONGOLAB_URI'))
 app.logger.debug("Connecting to MongoLabs")
@@ -36,9 +36,9 @@ def index():
 
 			#connecting to s3
 			s3 = boto.connect_s3(os.environ.get('AWS_ACCESS_KEY_ID'), os.environ.get('AWS_SECRET_ACCESS_KEY'))
-			bucket = s3.get_bucket(os.environ.get('AWS_BUCKET'))
+			b = s3.get_bucket(os.environ.get('AWS_BUCKET'))
 
-			k = bucket.new_key(bucket)
+			k = b.new_key(b)
 			k.key = filename #set filename
 			k.set_metadata("Content Type", uploaded_file.mimetype) #identify MIME type
 			k.set_contents_from_string(uploaded_file.stream.read()) # file contents to be added
@@ -53,7 +53,7 @@ def index():
 				submission.filename = filename
 				submission.save()
 
-				return redirect('/')
+			return redirect('/')
 
 		else:
 
@@ -65,6 +65,15 @@ def index():
 		}
 
 		return render_template('main.html', **templateData)
+
+@app.errorhandler(404)
+def page_not_found(error):
+	return "404 error", 404
+
+@app.errorhandler(500)
+def internalError(error):
+
+	return "500 error"
 
 #return whether it's allowed or not
 def allowed_file(filename):
@@ -78,4 +87,7 @@ def allowed_file(filename):
 # 	return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 if __name__ == '__main__':
-	app.run()
+	app.debug = os.environ.get('DEBUG', True)
+
+	port = int(os.environ.get('PORT', 5000))
+	app.run(host='0.0.0.0', port=port)
