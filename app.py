@@ -1,5 +1,5 @@
 import os, re
-from flask import Flask, render_template, request, redirect, url_for, send_from_directory
+from flask import Flask, render_template, request, redirect, url_for, send_from_directory, jsonify
 # import pymongo
 #from pymongo import ModelClient
 from werkzeug import secure_filename
@@ -53,7 +53,7 @@ def index():
 				submission.filename = filename
 				submission.save()
 
-			return redirect('/')
+			return "File uploaded!"
 
 		else:
 
@@ -80,11 +80,40 @@ def allowed_file(filename):
 	return '.' in filename and \
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
+@app.route('/data')
+def video_data():
 
-#expecting the name of a file -- will locate file on the upload directory and show in the browser
-# @app.route('/uploads/<filename>')
-# def uploaded_file(filename):
-# 	return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+	videos = models.Video.objects.order_by('-timestamp')
+
+	if videos:
+
+		public_data = []
+
+		for v in videos:
+
+			tmpVid = {
+				'filename' : v.filename,
+				'title' : v.title,
+				'timestamp' : str(v.timestamp),
+				'link' : 'https://s3.amazonaws.com/innovid_multiscreen/' + v.filename
+			}
+
+			public_data.append( tmpVid )
+
+		data = {
+			'status' : 'OK',
+			'videos' : public_data
+		}
+
+		return jsonify(data)
+
+	else:
+
+		error = {
+			'status' : 'error',
+			'message' : 'unable to retrieve video links'
+		}
+
 
 if __name__ == '__main__':
 	app.debug = os.environ.get('DEBUG', False)

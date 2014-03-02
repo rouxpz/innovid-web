@@ -9,6 +9,7 @@ class Video(mongoengine.Document):
 	#title of Video
 	title = mongoengine.StringField(max_length=120, required=True)
 	filename = mongoengine.StringField()
+	timestamp = mongoengine.DateTimeField(default=datetime.now())
 
 video_form = model_form(Video)
 
