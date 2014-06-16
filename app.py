@@ -20,7 +20,6 @@ app.config['CSRF_ENABLED'] = True
 mongoengine.connect('mydata', host=os.environ.get('MONGOLAB_URI'))
 app.logger.debug("Connecting to MongoLabs")
 
-# names = []
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -50,6 +49,7 @@ def index():
 
 				submission = models.Video()
 				submission.title = request.form.get('title')
+				submission.tag = request.form.get('raw_tag')
 				submission.filename = filename
 				submission.save()
 
@@ -64,7 +64,7 @@ def index():
 				'form' : video_upload_form
 		}
 
-		return render_template('main.html', **templateData)
+		return render_template('index.html', **templateData)
 
 @app.errorhandler(404)
 def page_not_found(error):
@@ -95,6 +95,7 @@ def video_data():
 				'filename' : v.filename,
 				'title' : v.title,
 				'timestamp' : str(v.timestamp),
+				'tag' : v.tag,
 				'link' : 'https://s3.amazonaws.com/innovid_multiscreen/' + v.filename
 			}
 

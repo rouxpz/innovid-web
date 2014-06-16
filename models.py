@@ -10,8 +10,10 @@ class Video(mongoengine.Document):
 	title = mongoengine.StringField(max_length=120, required=True)
 	filename = mongoengine.StringField()
 	timestamp = mongoengine.DateTimeField(default=datetime.now())
+	tag = mongoengine.StringField(max_length=30)
 
 video_form = model_form(Video)
 
 class video_upload_form(video_form):
 	fileupload = FileField('Upload a video', validators=[])
+	raw_tag = SelectField(u'Tag', choices=[("iPhone", "iPhone"), ("iPad", "iPad"), ("Macbook", "Macbook"), ("Mini", "Mini")])
