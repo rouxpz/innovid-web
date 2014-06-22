@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"
-          rel="stylesheet">
+    <title>Innovid Multi-Display Toolkit</title>
+    <link rel="stylesheet" type="text/css" href="static/styles.css">
+
   </head>
   <body>
-      <h1>Welcome</h1><br>
+      <h1>Innovid Multi-Display Toolkit</h1>
+      <h3>Upload videos here to use for the kit.</h3>
+      <strong>Things to keep in mind:</strong>
+      <ul>
+        <li>Please avoid using special characters (anything besides "-" and "_") and spaces in your video titles.</li>
+        <li>Make sure to select the appropriate device for the video before uploading!</li>
+      </ul>
       <br>
 
       {% if form.errors %}
@@ -26,18 +33,19 @@
 
         <div class="form-group">
         {{ form.title.label }}
-        {{ form.title(class="form-control") }}
+        {{ form.title(class="submissionfield") }}
       </div>
+      <br>
 
       <div class="form-group">
         {{ form.raw_tag.label }}
-        {{ form.raw_tag(class="form-control") }}
+        {{ form.raw_tag(class="tag-menu")}}
       </div>
-
+      <br>
 
       <div class="form-group">
-         {{ form.fileupload.label }}
-         {{ form.fileupload(class="btn btn-info") }}
+         {{ form.fileupload.label }}<br>
+         {{ form.fileupload(class="button") }}
       </div>
       <br>
       <input class="button" type="submit" value="Upload">

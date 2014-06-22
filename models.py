@@ -15,5 +15,5 @@ class Video(mongoengine.Document):
 video_form = model_form(Video)
 
 class video_upload_form(video_form):
-	fileupload = FileField('Upload a video', validators=[])
-	raw_tag = SelectField(u'Tag', choices=[("iPhone", "iPhone"), ("iPad", "iPad"), ("Macbook", "Macbook"), ("Mini", "Mini")])
+	fileupload = FileField('Select your video:', validators=[])
+	raw_tag = SelectField(u'Device:', choices=[("iPhone", "iPhone"), ("iPad", "iPad"), ("Macbook", "Macbook"), ("Mini", "Mini")])

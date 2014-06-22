@@ -53,7 +53,11 @@ def index():
 				submission.filename = filename
 				submission.save()
 
-			return "File uploaded!"
+			templateData = {
+				'video' : submission
+			}
+
+			return render_template('success.html', **templateData)
 
 		else:
 
